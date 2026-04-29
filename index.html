@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐑2孵蛋数据</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>羊2孵蛋数据</title>
     <style>
         :root {
             --dark-header: #1e293b;
@@ -12,101 +12,120 @@
             --blue-bg: #dbeafe; --blue-text: #1e40af; 
             --reset-red: #ef4444;
             --tab-active-bg: #1e293b; 
-            --tab-inactive: #f1f5f9;
         }
 
-        body { font-family: 'PingFang SC', 'Helvetica Neue', sans-serif; background-color: #f8fafc; margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 1250px; background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
-        
-        h2 { color: #1e293b; margin-bottom: 25px; font-weight: 700; }
+        /* 整体居中布局 */
+        body { 
+            font-family: 'PingFang SC', system-ui, sans-serif; 
+            background-color: #f8fafc; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; /* 水平居中核心 */
+            align-items: flex-start; 
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-        /* 控制栏自适应 */
+        .container { 
+            width: 100%; 
+            max-width: 900px; /* 适当缩小最大宽度，让表格更紧凑居中 */
+            background: white; 
+            padding: 25px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            text-align: center; /* 确保标题和控制栏文字居中 */
+        }
+
+        h2 { color: #1e293b; margin: 0 0 25px 0; font-weight: 700; }
+
+        /* 控制栏居中 */
         .controls-bar { 
-            display: flex; justify-content: space-between; align-items: center; 
-            background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 20px; 
-            border: 1px solid #e2e8f0; gap: 15px;
+            display: flex; 
+            justify-content: center; /* 控制栏内部组件居中 */
+            align-items: center; 
+            flex-wrap: wrap;
+            background: #ffffff; 
+            padding: 15px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            border: 1px solid #e2e8f0; 
+            gap: 15px;
         }
 
-        .tabs-wrapper { display: flex; gap: 6px; background: #f1f5f9; padding: 4px; border-radius: 10px; }
+        .tabs-wrapper { display: flex; gap: 8px; background: #f1f5f9; padding: 4px; border-radius: 10px; }
         .tab-btn {
-            padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer;
-            font-weight: 600; font-size: 14px; transition: all 0.2s;
-            background: transparent; color: #64748b;
+            padding: 8px 20px; border: none; border-radius: 8px; cursor: pointer;
+            font-weight: 600; font-size: 14px; background: transparent; color: #475569; transition: all 0.2s;
         }
-        .tab-btn.active { 
-            background: var(--tab-active-bg); 
-            color: #ffffff; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-        }
+        .tab-btn.active { background: var(--tab-active-bg); color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
 
-        /* 勾选区网格化 */
         .column-toggle { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
         .toggle-item {
-            display: flex; align-items: center; background: #f8fafc; padding: 6px 10px;
-            border-radius: 6px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 12px;
-            white-space: nowrap; transition: background 0.2s;
+            display: flex; align-items: center; background: #f8fafc; padding: 5px 10px;
+            border-radius: 6px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 13px;
         }
-        .toggle-item:active { background: #e2e8f0; }
         .toggle-item input { margin-right: 5px; }
 
         .btn-reset {
-            background-color: var(--reset-red); color: white; border: none; padding: 10px 18px;
+            background-color: var(--reset-red); color: white; border: none; padding: 8px 16px;
             border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;
         }
 
-        /* 表格容器 */
+        /* 表格容器及样式 */
         .table-container { 
-            overflow-x: auto; 
+            width: 100%; 
             border-radius: 12px; 
-            border: 1px solid #e2e8f0;
-            -webkit-overflow-scrolling: touch; /* 优化iOS滚动 */
+            border: 1px solid #e2e8f0; 
+            overflow: hidden; 
+            display: flex;
+            justify-content: center; /* 确保表格在容器内也倾向居中 */
         }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; } /* 保证小屏下也能横向滚动而非挤压 */
-        
-        th, td { text-align: center !important; padding: 12px 8px; vertical-align: middle; }
-        th { 
-            background: var(--dark-header); color: #ffffff; font-weight: 500; 
-            cursor: pointer; position: sticky; top: 0; z-index: 10; font-size: 13px;
-        }
-        td { border-bottom: 1px solid #f1f5f9; color: #475569; font-size: 13px; }
 
-        .name-cell { font-weight: 700; min-width: 100px; }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            table-layout: auto; /* 改为自动布局，让列宽自适应内容，视觉上更居中 */
+        }
+        
+        th, td { 
+            text-align: center !important; /* 强制所有单元格内容居中 */
+            padding: 14px 12px; 
+            vertical-align: middle; 
+            white-space: nowrap; 
+        }
+
+        th { background: var(--dark-header); color: #ffffff; cursor: pointer; font-size: 14px; }
+        td { border-bottom: 1px solid #f1f5f9; color: #475569; }
+
+        /* 名称列改为居中 */
+        .name-cell { 
+            font-weight: 700; 
+            text-align: center !important; 
+            padding-left: 12px !important; 
+        }
+
         .bg-orange { background-color: var(--orange-bg) !important; color: var(--orange-text) !important; }
         .bg-purple { background-color: var(--purple-bg) !important; color: var(--purple-text) !important; }
         .bg-blue   { background-color: var(--blue-bg) !important; color: var(--blue-text) !important; }
 
-        .tag { padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; display: inline-block; }
+        .tag { padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; display: inline-block; }
         .tag-卖 { background: #fee2e2; color: #dc2626; }
         .tag-喂 { background: #dcfce7; color: #16a34a; }
         .tag-按需选择 { background: #fef9c3; color: #a16207; }
 
         .hidden { display: none !important; }
 
-        /* --- 手机端适配专属媒体查询 --- */
+        /* 手机端适配 */
         @media (max-width: 768px) {
             body { padding: 10px; }
-            .container { padding: 15px; }
-            h2 { font-size: 1.25rem; margin-bottom: 15px; }
-
-            .controls-bar {
-                flex-direction: column; /* 纵向排列 */
-                align-items: stretch;
-                padding: 12px;
-            }
-
-            .tabs-wrapper { width: 100%; }
-            .tab-btn { flex: 1; text-align: center; }
-
-            .column-toggle {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* 网格排列 */
-                gap: 5px;
-            }
-            .toggle-item { justify-content: center; padding: 8px 4px; }
-
-            .btn-reset { width: 100%; margin-top: 5px; }
-
-            th, td { padding: 10px 5px; font-size: 12px; }
+            .container { padding: 12px; border-radius: 10px; }
+            .controls-bar { flex-direction: column; padding: 10px; gap: 10px; }
+            .column-toggle { display: grid; grid-template-columns: repeat(4, 1fr); width: 100%; }
+            .toggle-item { padding: 5px 2px; font-size: 11px; justify-content: center; }
+            .tabs-wrapper, .btn-reset { width: 100%; }
+            .name-cell { padding-left: 0 !important; }
+            th, td { padding: 10px 4px; }
         }
     </style>
 </head>
@@ -122,32 +141,32 @@
         </div>
 
         <div class="column-toggle" id="toggleContainer">
-            <label class="toggle-item"><input type="checkbox" data-index="1" onchange="renderCurrentTable()"> 孵化时间</label>
+            <label class="toggle-item"><input type="checkbox" data-index="1" onchange="renderCurrentTable()"> 时间</label>
             <label class="toggle-item"><input type="checkbox" data-index="2" checked onchange="renderCurrentTable()"> 金币</label>
             <label class="toggle-item"><input type="checkbox" data-index="3" checked onchange="renderCurrentTable()"> 经验</label>
             <label class="toggle-item"><input type="checkbox" data-index="4" onchange="renderCurrentTable()"> 分均金币</label>
             <label class="toggle-item"><input type="checkbox" data-index="5" onchange="renderCurrentTable()"> 分均经验</label>
             <label class="toggle-item"><input type="checkbox" data-index="6" onchange="renderCurrentTable()"> 金效</label>
             <label class="toggle-item"><input type="checkbox" data-index="7" onchange="renderCurrentTable()"> 经效</label>
-            <label class="toggle-item"><input type="checkbox" data-index="8" checked onchange="renderCurrentTable()"> 优先级</label>
+            <label class="toggle-item"><input type="checkbox" data-index="8" checked onchange="renderCurrentTable()"> 优先</label>
+        <button class="btn-reset" onclick="resetDefaults()">重置</button>
         </div>
 
-        <button class="btn-reset" onclick="resetDefaults()">重置</button>
     </div>
 
     <div class="table-container">
         <table id="dataTable">
             <thead>
                 <tr>
-                    <th>名称</th>
-                    <th class="col-1" onclick="sortTable(1)">孵化时间 ⇅</th>
-                    <th class="col-2" onclick="sortTable(2)">金币 ⇅</th>
-                    <th class="col-3" onclick="sortTable(3)">经验 ⇅</th>
-                    <th class="col-4" onclick="sortTable(4)">分均金币 ⇅</th>
-                    <th class="col-5" onclick="sortTable(5)">分均经验 ⇅</th>
-                    <th class="col-6" onclick="sortTable(6)">金效 ⇅</th>
-                    <th class="col-7" onclick="sortTable(7)">经效 ⇅</th>
-                    <th class="col-8">优先级</th>
+                    <th style="min-width: 100px;">名称</th>
+                    <th class="col-1" onclick="sortTable(1)">时间</th>
+                    <th class="col-2" onclick="sortTable(2)">金币</th>
+                    <th class="col-3" onclick="sortTable(3)">经验</th>
+                    <th class="col-4" onclick="sortTable(4)">分均金币</th>
+                    <th class="col-5" onclick="sortTable(5)">分均经验</th>
+                    <th class="col-6" onclick="sortTable(6)">金效</th>
+                    <th class="col-7" onclick="sortTable(7)">经效</th>
+                    <th class="col-8">优先</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -180,20 +199,42 @@
         {name: "绿色史莱姆", time: 15, gold: 358, exp: 125, goldMin: 23.9, expMin: 8.3, goldEff: 2.86, expEff: 0.35, priority: "按需选择", group: "blue"},
         {name: "格莉姆", time: 33, gold: 393, exp: 126, goldMin: 11.9, expMin: 3.8, goldEff: 3.12, expEff: 0.32, priority: "卖", group: "blue"}
     ];
-
     const goldData = [
         {name: "宝石迷迷可", time: 103, gold: 7071, exp: 874, goldMin: 68.7, expMin: 8.5, goldEff: 8.09, expEff: 0.12, priority: "卖", group: "orange"},
         {name: "真护之黑龙", time: 88, gold: 6546, exp: 710, goldMin: 74.4, expMin: 8.1, goldEff: 9.22, expEff: 0.11, priority: "卖", group: "orange"},
         {name: "星云史莱姆", time: 103, gold: 7046, exp: 710, goldMin: 68.4, expMin: 6.9, goldEff: 9.92, expEff: 0.10, priority: "卖", group: "orange"},
         {name: "东天之青龙", time: 123, gold: 6443, exp: 772, goldMin: 52.4, expMin: 6.3, goldEff: 8.35, expEff: 0.12, priority: "卖", group: "orange"},
         {name: "格里芬", time: 88, gold: 6871, exp: 804, goldMin: 78.1, expMin: 9.1, goldEff: 8.55, expEff: 0.12, priority: "卖", group: "orange"},
+        
+        {name: "繁茂杜吉芽", time: 62, gold: 2155, exp: 754, goldMin: 34.8, expMin: 12.2, goldEff: 2.86, expEff: 0.35, priority: "按需选择", group: "purple"},
+        {name: "秋风妖精", time: 103, gold: 2350, exp: 1113, goldMin: 22.8, expMin: 10.8, goldEff: 2.11, expEff: 0.47, priority: "喂", group: "purple"},
+        {name: "源泉猫", time: 42, gold: 2193, exp: 567, goldMin: 52.2, expMin: 13.5, goldEff: 3.87, expEff: 0.26, priority: "卖", group: "purple"},
+        {name: "雷素", time: 64, gold: 2258, exp: 667, goldMin: 35.3, expMin: 10.4, goldEff: 3.39, expEff: 0.30, priority: "卖", group: "purple"},
         {name: "熔火喷炎者", time: 55, gold: 2058, exp: 637, goldMin: 37.4, expMin: 11.6, goldEff: 3.23, expEff: 0.31, priority: "卖", group: "purple"},
         {name: "石像鬼", time: 65, gold: 2353, exp: 674, goldMin: 36.2, expMin: 10.4, goldEff: 3.49, expEff: 0.29, priority: "卖", group: "purple"},
         {name: "蜂刺骑兵", time: 55, gold: 1958, exp: 607, goldMin: 35.6, expMin: 11.0, goldEff: 3.23, expEff: 0.31, priority: "卖", group: "purple"},
         {name: "白银迷迷可", time: 67, gold: 2358, exp: 687, goldMin: 35.2, expMin: 10.3, goldEff: 3.43, expEff: 0.29, priority: "卖", group: "purple"},
+        
+        {name: "提灯妖精", time: 86, gold: 535, exp: 197, goldMin: 6.2, expMin: 2.3, goldEff: 2.72, expEff: 0.37, priority: "按需选择", group: "blue"},
+        {name: "吵吵蕈", time: 43, gold: 404, exp: 223, goldMin: 9.4, expMin: 5.2, goldEff: 1.81, expEff: 0.55, priority: "喂", group: "blue"},
+        {name: "臭臭蕈", time: 68, gold: 473, exp: 202, goldMin: 7.0, expMin: 3.0, goldEff: 2.34, expEff: 0.43, priority: "按需选择", group: "blue"},
+        {name: "角布林", time: 51, gold: 447, exp: 156, goldMin: 8.8, expMin: 3.1, goldEff: 2.87, expEff: 0.35, priority: "按需选择", group: "blue"},
+        {name: "掘地芙洛波", time: 72, gold: 532, exp: 130, goldMin: 7.4, expMin: 1.8, goldEff: 4.09, expEff: 0.24, priority: "卖", group: "blue"},
+        {name: "扬沙芙洛波", time: 26, gold: 399, exp: 91, goldMin: 15.3, expMin: 3.5, goldEff: 4.38, expEff: 0.23, priority: "卖", group: "blue"},
+        {name: "顽劣灯火", time: 80, gold: 530, exp: 168, goldMin: 6.6, expMin: 2.1, goldEff: 3.15, expEff: 0.32, priority: "卖", group: "blue"},
+        {name: "游离灯火", time: 58, gold: 458, exp: 177, goldMin: 7.9, expMin: 3.1, goldEff: 2.59, expEff: 0.39, priority: "按需选择", group: "blue"},
+        {name: "射水杜吉芽", time: 20, gold: 365, exp: 156, goldMin: 18.3, expMin: 7.8, goldEff: 2.34, expEff: 0.43, priority: "按需选择", group: "blue"},
+        {name: "囊袋恐兽", time: 35, gold: 410, exp: 135, goldMin: 11.7, expMin: 3.9, goldEff: 3.04, expEff: 0.33, priority: "卖", group: "blue"},
+        {name: "利齿恐兽", time: 32, gold: 387, exp: 187, goldMin: 12.1, expMin: 5.8, goldEff: 2.07, expEff: 0.48, priority: "喂", group: "blue"},
+        {name: "草原黏团", time: 10, gold: 348, exp: 100, goldMin: 34.8, expMin: 10.0, goldEff: 3.48, expEff: 0.29, priority: "卖", group: "blue"},
+        {name: "魔水粘团", time: 25, gold: 377, exp: 158, goldMin: 15.1, expMin: 6.3, goldEff: 2.39, expEff: 0.42, priority: "按需选择", group: "blue"},
+        {name: "鱼布林", time: 51, gold: 466, exp: 104, goldMin: 9.1, expMin: 2.0, goldEff: 4.48, expEff: 0.22, priority: "卖", group: "blue"},
+        {name: "绿色史莱姆", time: 15, gold: 358, exp: 125, goldMin: 23.9, expMin: 8.3, goldEff: 2.86, expEff: 0.35, priority: "按需选择", group: "blue"},
+        {name: "格莉姆", time: 33, gold: 393, exp: 126, goldMin: 11.9, expMin: 3.8, goldEff: 3.12, expEff: 0.32, priority: "卖", group: "blue"},
+        {name: "冰棱妖精", time: 33, gold: 333, exp: 106, goldMin: 10.1, expMin: 3.2, goldEff: 3.14, expEff: 0.32, priority: "卖", group: "blue"},
+        {name: "抛雪芙洛波", time: 33, gold: 390, exp: 120, goldMin: 11.8, expMin: 3.6, goldEff: 3.25, expEff: 0.31, priority: "卖", group: "blue"},
         {name: "布丁史莱姆", time: 33, gold: 393, exp: 256, goldMin: 11.9, expMin: 7.8, goldEff: 1.54, expEff: 0.65, priority: "喂", group: "blue"}
     ];
-
 
     function switchTab(tab, btn) {
         currentTab = tab;
@@ -211,12 +252,33 @@
         renderCurrentTable();
     }
 
+    function applyDynamicScaling() {
+        if (window.innerWidth > 768) {
+            document.querySelectorAll('th, td').forEach(el => {
+                el.style.fontSize = ''; el.style.padding = '';
+            });
+            return;
+        }
+
+        const activeCols = document.querySelectorAll('#toggleContainer input:checked').length + 1;
+        let fontSize = 13, padding = 14;
+
+        if (activeCols > 7) { fontSize = 9; padding = 5; }
+        else if (activeCols > 5) { fontSize = 10; padding = 8; }
+        else if (activeCols > 4) { fontSize = 11; padding = 10; }
+
+        document.querySelectorAll('th, td').forEach(el => {
+            el.style.fontSize = fontSize + 'px';
+            el.style.paddingTop = padding + 'px';
+            el.style.paddingBottom = padding + 'px';
+        });
+    }
+
     function renderCurrentTable() {
         const body = document.getElementById('tableBody');
         const items = currentTab === 'monster' ? monsterData : goldData;
         const checkboxes = Array.from(document.querySelectorAll('#toggleContainer input'));
         
-        // 更新表头隐藏状态
         checkboxes.forEach(cb => {
             const idx = cb.getAttribute('data-index');
             document.querySelectorAll(`.col-${idx}`).forEach(el => el.classList.toggle('hidden', !cb.checked));
@@ -226,8 +288,8 @@
             <tr>
                 <td class="name-cell bg-${item.group}">${item.name}</td>
                 <td class="col-1 ${!checkboxes[0].checked ? 'hidden' : ''}">${item.time}s</td>
-                <td class="col-2 ${!checkboxes[1].checked ? 'hidden' : ''}">${item.gold.toLocaleString()}</td>
-                <td class="col-3 ${!checkboxes[2].checked ? 'hidden' : ''}">${item.exp.toLocaleString()}</td>
+                <td class="col-2 ${!checkboxes[1].checked ? 'hidden' : ''}">${item.gold}</td>
+                <td class="col-3 ${!checkboxes[2].checked ? 'hidden' : ''}">${item.exp}</td>
                 <td class="col-4 ${!checkboxes[3].checked ? 'hidden' : ''}">${item.goldMin}</td>
                 <td class="col-5 ${!checkboxes[4].checked ? 'hidden' : ''}">${item.expMin}</td>
                 <td class="col-6 ${!checkboxes[5].checked ? 'hidden' : ''}">${item.goldEff}</td>
@@ -235,6 +297,8 @@
                 <td class="col-8 ${!checkboxes[7].checked ? 'hidden' : ''}"><span class="tag tag-${item.priority}">${item.priority}</span></td>
             </tr>
         `).join('');
+        
+        applyDynamicScaling();
     }
 
     function sortTable(n) {
@@ -264,6 +328,7 @@
     }
 
     window.onload = renderCurrentTable;
+    window.onresize = applyDynamicScaling;
 </script>
 
 </body>
