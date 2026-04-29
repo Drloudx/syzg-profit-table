@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>🐑2孵蛋数据</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐑2孵蛋数据 - 移动优化版</title>
     <style>
         :root {
             --dark-header: #1e293b;
@@ -10,72 +11,103 @@
             --purple-bg: #f3e8ff; --purple-text: #6b21a8; 
             --blue-bg: #dbeafe; --blue-text: #1e40af; 
             --reset-red: #ef4444;
-
             --tab-active-bg: #1e293b; 
             --tab-inactive: #f1f5f9;
         }
 
-        body { font-family: 'PingFang SC', sans-serif; background-color: #f8fafc; margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 1250px; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
+        body { font-family: 'PingFang SC', 'Helvetica Neue', sans-serif; background-color: #f8fafc; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1250px; background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; }
         
-        h2 { color: #1e293b; margin-bottom: 30px; font-weight: 700; }
+        h2 { color: #1e293b; margin-bottom: 25px; font-weight: 700; }
 
-        /* 顶部控制栏 */
+        /* 控制栏自适应 */
         .controls-bar { 
             display: flex; justify-content: space-between; align-items: center; 
-            background: #ffffff; padding: 15px 25px; border-radius: 12px; margin-bottom: 25px; 
-            border: 1px solid #e2e8f0; gap: 20px;
+            background: #ffffff; padding: 15px; border-radius: 12px; margin-bottom: 20px; 
+            border: 1px solid #e2e8f0; gap: 15px;
         }
 
-        /* 分页切换样式调整 */
-        .tabs-wrapper { display: flex; gap: 8px; background: transparent; padding: 5px; border-radius: 10px; }
+        .tabs-wrapper { display: flex; gap: 6px; background: #f1f5f9; padding: 4px; border-radius: 10px; }
         .tab-btn {
-            padding: 10px 24px; border: none; border-radius: 10px; cursor: pointer;
-            font-weight: 600; font-size: 15px; transition: all 0.2s;
-            background: #e5eaf0; color: #475569; /* 默认未选中颜色 */
+            padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer;
+            font-weight: 600; font-size: 14px; transition: all 0.2s;
+            background: transparent; color: #64748b;
         }
-        /* 选中状态：深色背景，白色文字 */
         .tab-btn.active { 
             background: var(--tab-active-bg); 
             color: #ffffff; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
         }
 
-        /* 勾选区 */
-        .column-toggle { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
+        /* 勾选区网格化 */
+        .column-toggle { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
         .toggle-item {
-            display: flex; align-items: center; background: #f8fafc; padding: 6px 12px;
-            border-radius: 8px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 13px;
+            display: flex; align-items: center; background: #f8fafc; padding: 6px 10px;
+            border-radius: 6px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 12px;
+            white-space: nowrap; transition: background 0.2s;
         }
-        .toggle-item input { margin-right: 6px; }
+        .toggle-item:active { background: #e2e8f0; }
+        .toggle-item input { margin-right: 5px; }
 
         .btn-reset {
-            background-color: var(--reset-red); color: white; border: none; padding: 9px 18px;
-            border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; white-space: nowrap;
+            background-color: var(--reset-red); color: white; border: none; padding: 10px 18px;
+            border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;
         }
 
-        /* 表格样式*/
-        .table-container { overflow-x: auto; border-radius: 12px; border: 1px solid #e2e8f0; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { text-align: center !important; padding: 16px; vertical-align: middle; }
+        /* 表格容器 */
+        .table-container { 
+            overflow-x: auto; 
+            border-radius: 12px; 
+            border: 1px solid #e2e8f0;
+            -webkit-overflow-scrolling: touch; /* 优化iOS滚动 */
+        }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; } /* 保证小屏下也能横向滚动而非挤压 */
+        
+        th, td { text-align: center !important; padding: 12px 8px; vertical-align: middle; }
         th { 
             background: var(--dark-header); color: #ffffff; font-weight: 500; 
-            cursor: pointer; position: sticky; top: 0; z-index: 10; font-size: 14px;
+            cursor: pointer; position: sticky; top: 0; z-index: 10; font-size: 13px;
         }
-        td { border-bottom: 1px solid #f1f5f9; color: #475569; font-size: 14px; }
+        td { border-bottom: 1px solid #f1f5f9; color: #475569; font-size: 13px; }
 
-        .name-cell { font-weight: 700; }
+        .name-cell { font-weight: 700; min-width: 100px; }
         .bg-orange { background-color: var(--orange-bg) !important; color: var(--orange-text) !important; }
         .bg-purple { background-color: var(--purple-bg) !important; color: var(--purple-text) !important; }
         .bg-blue   { background-color: var(--blue-bg) !important; color: var(--blue-text) !important; }
 
-        .tag { padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; display: inline-block; }
+        .tag { padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; display: inline-block; }
         .tag-卖 { background: #fee2e2; color: #dc2626; }
         .tag-喂 { background: #dcfce7; color: #16a34a; }
         .tag-按需选择 { background: #fef9c3; color: #a16207; }
 
-        .hidden { display: none; }
-        tr:hover td { background-color: #f8fafc; }
+        .hidden { display: none !important; }
+
+        /* --- 手机端适配专属媒体查询 --- */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { padding: 15px; }
+            h2 { font-size: 1.25rem; margin-bottom: 15px; }
+
+            .controls-bar {
+                flex-direction: column; /* 纵向排列 */
+                align-items: stretch;
+                padding: 12px;
+            }
+
+            .tabs-wrapper { width: 100%; }
+            .tab-btn { flex: 1; text-align: center; }
+
+            .column-toggle {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* 网格排列 */
+                gap: 5px;
+            }
+            .toggle-item { justify-content: center; padding: 8px 4px; }
+
+            .btn-reset { width: 100%; margin-top: 5px; }
+
+            th, td { padding: 10px 5px; font-size: 12px; }
+        }
     </style>
 </head>
 <body>
@@ -155,43 +187,17 @@
         {name: "星云史莱姆", time: 103, gold: 7046, exp: 710, goldMin: 68.4, expMin: 6.9, goldEff: 9.92, expEff: 0.10, priority: "卖", group: "orange"},
         {name: "东天之青龙", time: 123, gold: 6443, exp: 772, goldMin: 52.4, expMin: 6.3, goldEff: 8.35, expEff: 0.12, priority: "卖", group: "orange"},
         {name: "格里芬", time: 88, gold: 6871, exp: 804, goldMin: 78.1, expMin: 9.1, goldEff: 8.55, expEff: 0.12, priority: "卖", group: "orange"},
-        
-        {name: "繁茂杜吉芽", time: 62, gold: 2155, exp: 754, goldMin: 34.8, expMin: 12.2, goldEff: 2.86, expEff: 0.35, priority: "按需选择", group: "purple"},
-        {name: "秋风妖精", time: 103, gold: 2350, exp: 1113, goldMin: 22.8, expMin: 10.8, goldEff: 2.11, expEff: 0.47, priority: "喂", group: "purple"},
-        {name: "源泉猫", time: 42, gold: 2193, exp: 567, goldMin: 52.2, expMin: 13.5, goldEff: 3.87, expEff: 0.26, priority: "卖", group: "purple"},
-        {name: "雷素", time: 64, gold: 2258, exp: 667, goldMin: 35.3, expMin: 10.4, goldEff: 3.39, expEff: 0.30, priority: "卖", group: "purple"},
         {name: "熔火喷炎者", time: 55, gold: 2058, exp: 637, goldMin: 37.4, expMin: 11.6, goldEff: 3.23, expEff: 0.31, priority: "卖", group: "purple"},
         {name: "石像鬼", time: 65, gold: 2353, exp: 674, goldMin: 36.2, expMin: 10.4, goldEff: 3.49, expEff: 0.29, priority: "卖", group: "purple"},
         {name: "蜂刺骑兵", time: 55, gold: 1958, exp: 607, goldMin: 35.6, expMin: 11.0, goldEff: 3.23, expEff: 0.31, priority: "卖", group: "purple"},
         {name: "白银迷迷可", time: 67, gold: 2358, exp: 687, goldMin: 35.2, expMin: 10.3, goldEff: 3.43, expEff: 0.29, priority: "卖", group: "purple"},
-        
-        {name: "提灯妖精", time: 86, gold: 535, exp: 197, goldMin: 6.2, expMin: 2.3, goldEff: 2.72, expEff: 0.37, priority: "按需选择", group: "blue"},
-        {name: "吵吵蕈", time: 43, gold: 404, exp: 223, goldMin: 9.4, expMin: 5.2, goldEff: 1.81, expEff: 0.55, priority: "喂", group: "blue"},
-        {name: "臭臭蕈", time: 68, gold: 473, exp: 202, goldMin: 7.0, expMin: 3.0, goldEff: 2.34, expEff: 0.43, priority: "按需选择", group: "blue"},
-        {name: "角布林", time: 51, gold: 447, exp: 156, goldMin: 8.8, expMin: 3.1, goldEff: 2.87, expEff: 0.35, priority: "按需选择", group: "blue"},
-        {name: "掘地芙洛波", time: 72, gold: 532, exp: 130, goldMin: 7.4, expMin: 1.8, goldEff: 4.09, expEff: 0.24, priority: "卖", group: "blue"},
-        {name: "扬沙芙洛波", time: 26, gold: 399, exp: 91, goldMin: 15.3, expMin: 3.5, goldEff: 4.38, expEff: 0.23, priority: "卖", group: "blue"},
-        {name: "顽劣灯火", time: 80, gold: 530, exp: 168, goldMin: 6.6, expMin: 2.1, goldEff: 3.15, expEff: 0.32, priority: "卖", group: "blue"},
-        {name: "游离灯火", time: 58, gold: 458, exp: 177, goldMin: 7.9, expMin: 3.1, goldEff: 2.59, expEff: 0.39, priority: "按需选择", group: "blue"},
-        {name: "射水杜吉芽", time: 20, gold: 365, exp: 156, goldMin: 18.3, expMin: 7.8, goldEff: 2.34, expEff: 0.43, priority: "按需选择", group: "blue"},
-        {name: "囊袋恐兽", time: 35, gold: 410, exp: 135, goldMin: 11.7, expMin: 3.9, goldEff: 3.04, expEff: 0.33, priority: "卖", group: "blue"},
-        {name: "利齿恐兽", time: 32, gold: 387, exp: 187, goldMin: 12.1, expMin: 5.8, goldEff: 2.07, expEff: 0.48, priority: "喂", group: "blue"},
-        {name: "草原黏团", time: 10, gold: 348, exp: 100, goldMin: 34.8, expMin: 10.0, goldEff: 3.48, expEff: 0.29, priority: "卖", group: "blue"},
-        {name: "魔水粘团", time: 25, gold: 377, exp: 158, goldMin: 15.1, expMin: 6.3, goldEff: 2.39, expEff: 0.42, priority: "按需选择", group: "blue"},
-        {name: "鱼布林", time: 51, gold: 466, exp: 104, goldMin: 9.1, expMin: 2.0, goldEff: 4.48, expEff: 0.22, priority: "卖", group: "blue"},
-        {name: "绿色史莱姆", time: 15, gold: 358, exp: 125, goldMin: 23.9, expMin: 8.3, goldEff: 2.86, expEff: 0.35, priority: "按需选择", group: "blue"},
-        {name: "格莉姆", time: 33, gold: 393, exp: 126, goldMin: 11.9, expMin: 3.8, goldEff: 3.12, expEff: 0.32, priority: "卖", group: "blue"},
-        {name: "冰棱妖精", time: 33, gold: 333, exp: 106, goldMin: 10.1, expMin: 3.2, goldEff: 3.14, expEff: 0.32, priority: "卖", group: "blue"},
-        {name: "抛雪芙洛波", time: 33, gold: 390, exp: 120, goldMin: 11.8, expMin: 3.6, goldEff: 3.25, expEff: 0.31, priority: "卖", group: "blue"},
         {name: "布丁史莱姆", time: 33, gold: 393, exp: 256, goldMin: 11.9, expMin: 7.8, goldEff: 1.54, expEff: 0.65, priority: "喂", group: "blue"}
     ];
 
 
     function switchTab(tab, btn) {
         currentTab = tab;
-        // 移除所有按钮的 active 类
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        // 给当前点击的按钮添加 active 类
         btn.classList.add('active');
         renderCurrentTable();
     }
@@ -208,8 +214,9 @@
     function renderCurrentTable() {
         const body = document.getElementById('tableBody');
         const items = currentTab === 'monster' ? monsterData : goldData;
-        const checkboxes = document.querySelectorAll('#toggleContainer input');
+        const checkboxes = Array.from(document.querySelectorAll('#toggleContainer input'));
         
+        // 更新表头隐藏状态
         checkboxes.forEach(cb => {
             const idx = cb.getAttribute('data-index');
             document.querySelectorAll(`.col-${idx}`).forEach(el => el.classList.toggle('hidden', !cb.checked));
